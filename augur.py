@@ -4,9 +4,10 @@ from json import encoder
 
 class _SVM_Result:
     def __init__(self, svr, Xmins, Xmaxs, Xmeans, ymin, ymax, ymean):
-        self.supportVector = svr.support_vectors_.tolist()
-        self.dualCoef = svr.dual_coef_.tolist()
-        self.epsilon = svr.epsilon        
+        self.supportVectors = svr.support_vectors_.tolist()
+        self.dualCoef = svr.dual_coef_.tolist()[0]
+        self.bias = svr.intercept_.tolist()[0]
+        self.gamma = svr.gamma
         self.Xmaxs = Xmaxs
         self.Xmins = Xmins
         self.Xmeans = Xmeans

@@ -28,9 +28,11 @@ var augur = (function (canExport) {
    */
    
   function SVR(config) {
+    
     this.supportVectors = config.supportVectors;
-    this.dualCoefs = config.dualCoefs;
-    this.epsilon = config.epsilon;
+    this.dualCoef = config.dualCoef;
+
+    this.gamma = config.gamma;
     this.bias = config.bias;
     
     this.Xmins = config.Xmins;
@@ -39,7 +41,7 @@ var augur = (function (canExport) {
     
     this.ymin = config.ymin;
     this.ymax = config.ymax;
-    this.ymean = config.ymean;
+    this.ymean = config.ymean;    
   } 
    
   /**
@@ -48,22 +50,26 @@ var augur = (function (canExport) {
    */ 
   SVR.prototype.predict = function (element) {
     var sum = 0.0,
-        scaledElement = this._normalize(element), 
-        x1Square = selfDotProduct(scaledElement),
-        x2Square, dot;
-    
+        normalizedElement = this._normalize(element),
+        diff, norm;
+
     for (var i = 0; i < this.supportVectors.length; i++) {
-      x2Square = selfDotProduct(this.supportVectors[i]);
-      dot = dotProduct(scaledElement, this.supportVectors[i]);
-      sum += this.dualCoefs[i] * Math.exp(-this.epsilon * (x1Square + x2Square - 2 * dot));
+      diff = [];
+      norm = 0.0;
+
+      for (var j = 0; j < normalizedElement.length; j++)
+        diff.push(this.supportVectors[i][j] - normalizedElement[j]);
+      for (var k = 0; k < diff.length; k++)
+        norm += diff[k] * diff[k];
+      sum += this.dualCoef[i] * Math.exp(-this.gamma * norm);
     }
-    
     return this._unNormalize(sum + this.bias);
   };
  
   SVR.prototype._normalize = function (values) {
+    var _this = this;
     return values.map(function (value, idx) {
-      return (value - this.Xmeans[idx]) / (this.Xmaxs[idx] - this.Xmins[idx]);
+      return (value - _this.Xmeans[idx]) / (_this.Xmaxs[idx] - _this.Xmins[idx]);
     });
   };
   

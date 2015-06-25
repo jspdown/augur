@@ -10,19 +10,16 @@ from sklearn.preprocessing import normalize
 # Generate sample data
 X = np.sort(5 * np.random.rand(40, 1), axis=0)
 y = np.sin(X).ravel()
-
 # Normalize
 nX = (X - X.mean()) / (X.max() - X.min())
 ny = (y - y.mean()) / (y.max() - y.min())
-
 # Add noise to targets
 ny[::5] += 3 * (0.5 - np.random.rand(8))
 
 ###############################################################################
 # Fit regression model
-svr_rbf = SVR(kernel='rbf', C=1e5, gamma=0.1)
+svr_rbf = SVR(kernel='rbf', C=1e5, gamma=0.1, epsilon=0.01)
 svr = svr_rbf.fit(nX, ny)
-
 y_rbf = svr.predict(nX)
 
 ###############################################################################
@@ -56,5 +53,5 @@ ymin = y.min().item()
 ymax = y.max().item()
 ymean = y.mean().item()
 
-augur.export('output.json', svr, Xmins, Xmaxs, Xmeans, ymin, ymax, ymean)
+augur.export('test/output.json', svr, Xmins, Xmaxs, Xmeans, ymin, ymax, ymean)
 
