@@ -1,5 +1,5 @@
 
-var augur = (function () {
+var augur = (function (canExport) {
   'use strict';
   
   function dotProduct(element1, element2) {
@@ -71,8 +71,9 @@ var augur = (function () {
     return value * (this.ymax - this.ymin) + this.ymean;
   };
 
-  return {
-    SVR: SVR
-  };
+  if (canExport) {
+    module.exports({ SVR: SVR });
+  }
+  return { SVR: SVR };
 
-})();
+})(typeof module !== 'undefined' && module.exports);
