@@ -1,8 +1,8 @@
-## Augur
+# Augur
 
 Prediction tool based on Scikit-learn SVR output. 
 
-# Feature:
+## Feature:
 
 ```javascript
 var omens = augur.SVR(require('./salary.json');
@@ -19,6 +19,6 @@ JSON resulting file should contains:
 - gamma
 - C
 
-# TODO:
+## TODO:
 - linear kernel
 - normalization should be optionnal
