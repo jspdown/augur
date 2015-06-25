@@ -72,7 +72,7 @@ var augur = (function (canExport) {
   };
 
   if (canExport) {
-    module.exports({ SVR: SVR });
+    module.exports = { SVR: SVR };
   }
   return { SVR: SVR };
 

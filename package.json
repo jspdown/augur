@@ -1,0 +1,22 @@
+{
+  "name": "augur",
+  "version": "0.0.1",
+  "description": "Prediction tool based on Scikit-learn SVR output.",
+  "main": "augur.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jspdown/augur.git"
+  },
+  "author": "Harold Ozouf <harold.ozouf@tryon.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jspdown/augur/issues"
+  },
+  "homepage": "https://github.com/jspdown/augur"
+}
