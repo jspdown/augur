@@ -48,7 +48,7 @@ var augur = (function () {
    */ 
   SVR.prototype.predict = function (element) {
     var sum = 0.0,
-        scaledElement = this.normalize(element), 
+        scaledElement = this._normalize(element), 
         x1Square = selfDotProduct(scaledElement),
         x2Square, dot;
     
@@ -58,26 +58,16 @@ var augur = (function () {
       sum += this.dualCoefs[i] * Math.exp(-this.epsilon * (x1Square + x2Square - 2 * dot));
     }
     
-    return this.unNormalize(sum + this.bias);
+    return this._unNormalize(sum + this.bias);
   };
-  
-  /**
-   * normalize:
-   * - values ([float])
-   * return normalized values
-   */
-  SVR.prototype.normalize = function (values) {
+ 
+  SVR.prototype._normalize = function (values) {
     return values.map(function (value, idx) {
       return (value - this.Xmeans[idx]) / (this.Xmaxs[idx] - this.Xmins[idx]);
     });
   };
   
-  /**
-   * unNormalize:
-   * - values ([float])
-   * return unnormalized values
-   */
-  SVR.prototype.unNormalize = function (value) {
+  SVR.prototype._unNormalize = function (value) {
     return value * (this.ymax - this.ymin) + this.ymean;
   };
 
