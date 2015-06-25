@@ -1,31 +1,35 @@
 
-###############################################################################
-# source: http://scikit-learn.org/stable/auto_examples/svm/plot_svm_regression.html
-###############################################################################
 
 import numpy as np
 from sklearn.svm import SVR
 import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import normalize
 
 ###############################################################################
 # Generate sample data
 X = np.sort(5 * np.random.rand(40, 1), axis=0)
 y = np.sin(X).ravel()
 
-###############################################################################
+# Normalize
+nX = (X - X.mean()) / (X.max() - X.min())
+ny = (y - y.mean()) / (y.max() - y.min())
+
 # Add noise to targets
-y[::5] += 3 * (0.5 - np.random.rand(8))
+ny[::5] += 3 * (0.5 - np.random.rand(8))
 
 ###############################################################################
 # Fit regression model
-svr_rbf = SVR(kernel='rbf', C=1e3, gamma=0.1)
-y_rbf = svr_rbf.fit(X, y).predict(X)
+svr_rbf = SVR(kernel='rbf', C=1e5, gamma=0.1)
+svr = svr_rbf.fit(nX, ny)
+
+y_rbf = svr.predict(nX)
 
 ###############################################################################
 # look at the results
-plt.scatter(X, y, c='k', label='data')
+plt.scatter(nX, ny, c='k', label='data')
 plt.hold('on')
-plt.plot(X, y_rbf, c='g', label='RBF model')
+plt.plot(nX, y_rbf, c='g', label='RBF model')
 plt.xlabel('data')
 plt.ylabel('target')
 plt.title('Support Vector Regression')
@@ -40,6 +44,17 @@ import os
 sys.path.insert(0, os.getcwd())
 oldPath = sys.path
 sys.path.append('../')
-import augurexport
+
+import augur
 sys.path = oldPath
+
+Xmins = [X.min().item()]
+Xmaxs = [X.max().item()]
+Xmeans = [X.mean().item()]
+
+ymin = y.min().item()
+ymax = y.max().item()
+ymean = y.mean().item()
+
+augur.export('output.json', svr, Xmins, Xmaxs, Xmeans, ymin, ymax, ymean)
 
