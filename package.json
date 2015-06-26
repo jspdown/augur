@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/jspdown/augur/issues"
   },
-  "homepage": "https://github.com/jspdown/augur"
+  "homepage": "https://github.com/jspdown/augur",
+  "dependencies": {
+    "yargs": "^3.13.0"
+  }
 }
