@@ -1,0 +1,23 @@
+{
+  "name": "augur",
+  "main": "augur.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jspdown/augur",
+  "authors": [
+    "jspdown <harold.ozouf@gmail.com>"
+  ],
+  "description": "Prediction tool based on Scikit-learn SVR output",
+  "keywords": [
+    "machine-learning",
+    "svr",
+    "scikit-learn",
+    "prediction",
+    "regression"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ]
+}

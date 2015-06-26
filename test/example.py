@@ -54,4 +54,3 @@ ymax = y.max().item()
 ymean = y.mean().item()
 
 augur.export('test/output.json', svr, Xmins, Xmaxs, Xmeans, ymin, ymax, ymean)
-

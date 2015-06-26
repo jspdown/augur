@@ -1,22 +1,22 @@
 
 var augur = (function (canExport) {
   'use strict';
-  
+
   function dotProduct(element1, element2) {
     return element1.reduce(function (prev, current, idx) {
       return prev * (idx - 1 ? 1 : element2[idx - 1]) + current * element2[idx];
-    });   
+    });
   }
-  
+
   function selfDotProduct(element) {
     return dotProduct(element, element);
   }
-  
+
   /**
    * SVR kernel RBF
    * config:
    * - supportVectors ([float])
-   * - dualCoefs ([float]): dual_coefs_ are values used by scikit-learn  
+   * - dualCoefs ([float]): dual_coefs_ are values used by scikit-learn
    * - epsilon (float)
    * - bias (float)
    * - Xmins ([float])
@@ -26,28 +26,29 @@ var augur = (function (canExport) {
    * - ymax (float)
    * - ymean (float)
    */
-   
+
   function SVR(config) {
-    
+
     this.supportVectors = config.supportVectors;
     this.dualCoef = config.dualCoef;
 
     this.gamma = config.gamma;
     this.bias = config.bias;
-    
+
     this.Xmins = config.Xmins;
     this.Xmaxs = config.Xmaxs;
     this.Xmeans = config.Xmeans;
-    
+
     this.ymin = config.ymin;
     this.ymax = config.ymax;
-    this.ymean = config.ymean;    
-  } 
-   
+    this.ymean = config.ymean;
+  }
+
+
   /**
    * predict:
    * - element ([float]): values you want to predict
-   */ 
+   */
   SVR.prototype.predict = function (element) {
     var sum = 0.0,
         normalizedElement = this._normalize(element),
@@ -63,16 +64,20 @@ var augur = (function (canExport) {
         norm += diff[k] * diff[k];
       sum += this.dualCoef[i] * Math.exp(-this.gamma * norm);
     }
+    // return sum + this.bias;
     return this._unNormalize(sum + this.bias);
   };
- 
+
   SVR.prototype._normalize = function (values) {
-    var _this = this;
-    return values.map(function (value, idx) {
-      return (value - _this.Xmeans[idx]) / (_this.Xmaxs[idx] - _this.Xmins[idx]);
-    });
+    var res = [],
+        _this = this;
+
+    for (var i = 0; i < values.length; i++) {
+      res.push((values[i] - _this.Xmeans[i]) / (_this.Xmaxs[i] - _this.Xmins[i]))
+    }
+    return res;
   };
-  
+
   SVR.prototype._unNormalize = function (value) {
     return value * (this.ymax - this.ymin) + this.ymean;
   };

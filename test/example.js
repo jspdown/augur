@@ -1,6 +1,25 @@
 
-var augur = require('../augur');
+var yargs = require('yargs'),
+    augur = require('../augur');
 
-var svr = new augur.SVR(require('./output.json'))
 
-console.log('prediction =', svr.predict([0.42989068]));
+(function main() {
+  'use strict';
+
+  var svr = createSVR('./output.json'),
+      argv = yargs.usage('Usage: $0 --value')
+                  .demand(['value'])
+                  .argv;
+
+  if (argv.value) {
+    console.log(predict(svr, argv.value));
+  }
+})()
+
+function createSVR(filename) {
+  return new augur.SVR(require(filename));
+}
+
+function predict(svr, value) {
+  return svr.predict([value]);
+}
