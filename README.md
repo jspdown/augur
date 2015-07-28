@@ -8,6 +8,13 @@ var omens = augur.SVR(require('./salary.json');
 yours = omens.predict([35, 21, 5, 102.0]); // yours => 42,000.0   
 ```
 
+
+## Install:
+
+``` shell
+$> bower install augur
+```
+
 ## Usage:
 
 Export SVR output:
